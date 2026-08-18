@@ -13,19 +13,22 @@ jobs:
         env:
           NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
         run: |
-          DOMAINS="northjstech.com upsell.northjstech.com productoptions.northjstech.com \
-                   cartdrawer.northjstech.com quantitybreaks.northjstech.com \
-                   support.northjstech.com richlandingbundle.northjstech.com \
-                   formbuilder.northjstech.com quiz.northjstech.com"
+          # site root for the marketing site; /healthz for the apps (their roots
+          # redirect into Shopify OAuth, which returns 410 to plain probes)
+          URLS="https://northjstech.com/ \
+                https://upsell.northjstech.com/healthz https://productoptions.northjstech.com/healthz \
+                https://cartdrawer.northjstech.com/healthz https://quantitybreaks.northjstech.com/healthz \
+                https://support.northjstech.com/healthz https://richlandingbundle.northjstech.com/healthz \
+                https://formbuilder.northjstech.com/healthz https://quiz.northjstech.com/healthz"
           FAILED=""
-          for d in $DOMAINS; do
+          for u in $URLS; do
             ok=0
             for attempt in 1 2; do
-              code=$(curl -s -o /dev/null -w '%{http_code}' -m 20 -L "https://$d/" || echo 000)
+              code=$(curl -s -o /dev/null -w '%{http_code}' -m 20 "$u" || echo 000)
               case "$code" in 2*|3*) ok=1; break;; esac
               sleep 10
             done
-            [ "$ok" = 1 ] || FAILED="$FAILED $d($code)"
+            [ "$ok" = 1 ] || FAILED="$FAILED ${u#https://}($code)"
           done
           if [ -n "$FAILED" ]; then
             curl -fsS -m 10 \
