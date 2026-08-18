@@ -1,0 +1,54 @@
+name: uptime
+on:
+  schedule:
+    - cron: '*/10 * * * *'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check all sites
+        env:
+          NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
+        run: |
+          DOMAINS="northjstech.com upsell.northjstech.com productoptions.northjstech.com \
+                   cartdrawer.northjstech.com quantitybreaks.northjstech.com \
+                   support.northjstech.com richlandingbundle.northjstech.com \
+                   formbuilder.northjstech.com quiz.northjstech.com"
+          FAILED=""
+          for d in $DOMAINS; do
+            ok=0
+            for attempt in 1 2; do
+              code=$(curl -s -o /dev/null -w '%{http_code}' -m 20 -L "https://$d/" || echo 000)
+              case "$code" in 2*|3*) ok=1; break;; esac
+              sleep 10
+            done
+            [ "$ok" = 1 ] || FAILED="$FAILED $d($code)"
+          done
+          if [ -n "$FAILED" ]; then
+            curl -fsS -m 10 \
+              -H "Title: SITE DOWN (external check)" \
+              -H "Priority: max" \
+              -H "Tags: rotating_light" \
+              -d "Unreachable from GitHub:$FAILED" \
+              "https://ntfy.sh/$NTFY_TOPIC"
+            echo "FAILED:$FAILED"; exit 1
+          fi
+          echo "all sites OK"
+  keepalive:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'schedule'
+    steps:
+      - uses: actions/checkout@v4
+      - name: Monthly keepalive commit
+        run: |
+          if [ "$(date -u +%d%H%M)" \< "0101 " ] || { [ "$(date -u +%d)" = "01" ] && [ "$(date -u +%H)" = "00" ] && [ "$(date -u +%M)" -lt 10 ]; }; then
+            date -u > .keepalive
+            git config user.email "actions@github.com"
+            git config user.name "keepalive"
+            git add .keepalive && git commit -m "keepalive" && git push || true
+          else
+            echo "not the monthly keepalive window"
+          fi
