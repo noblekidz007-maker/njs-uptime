@@ -1,4 +1,5 @@
 name: uptime
+# external uptime checks, every 5 hours
 on:
   schedule:
     - cron: '0 */5 * * *'
