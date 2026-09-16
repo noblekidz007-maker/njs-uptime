@@ -24,14 +24,10 @@ jobs:
                 https://support.northjstech.com/healthz https://richlandingbundle.northjstech.com/healthz \
                 https://formbuilder.northjstech.com/healthz https://quiz.northjstech.com/healthz \
                 https://deliveryapp.northjstech.com/healthz https://wishlist.northjstech.com/healthz \
-                https://njsemailsystem.northjstech.com/healthz"
-          # Provisioned on the server (DNS, Caddy, TLS, database all live) but
-          # not deployed yet — their repo PRs add the deploy workflow. Adding
-          # them before the first deploy would page hourly on a 502. Uncomment
-          # each as it goes live:
-          #   https://sizechart.northjstech.com/healthz
-          #   https://backinstock.northjstech.com/healthz
-          #   https://sectionbuilder.northjstech.com/healthz
+                https://njsemailsystem.northjstech.com/healthz \
+                https://sizechart.northjstech.com/healthz \
+                https://backinstock.northjstech.com/healthz \
+                https://sectionbuilder.northjstech.com/healthz"
           FAILED=""
           for u in $URLS; do
             ok=0
