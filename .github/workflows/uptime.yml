@@ -27,7 +27,14 @@ jobs:
                 https://njsemailsystem.northjstech.com/healthz \
                 https://sizechart.northjstech.com/healthz \
                 https://backinstock.northjstech.com/healthz \
-                https://sectionbuilder.northjstech.com/healthz"
+                https://sectionbuilder.northjstech.com/healthz \
+                https://fraudfilter.northjstech.com/healthz \
+                https://instagramfeed.northjstech.com/healthz \
+                https://loyaltyandrewards.northjstech.com/healthz \
+                https://emailpopup.northjstech.com/healthz \
+                https://ndc.northjstech.com/healthz \
+                https://abtest.northjstech.com/healthz \
+                https://taskmanagement.northjstech.com/healthz"
           FAILED=""
           for u in $URLS; do
             ok=0
