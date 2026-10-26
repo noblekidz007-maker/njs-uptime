@@ -30,7 +30,11 @@ jobs:
                 https://fraudfilter.northjstech.com/healthz \
                 https://instagramfeed.northjstech.com/healthz \
                 https://loyaltyandrewards.northjstech.com/healthz \
-                https://emailpopup.northjstech.com/healthz"
+                https://emailpopup.northjstech.com/healthz \
+                https://currencyconverter.northjstech.com/healthz \
+                https://breadcrumbs.northjstech.com/healthz \
+                https://combinedlistings.northjstech.com/healthz \
+                https://variantimages.northjstech.com/healthz"
           FAILED=""
           for u in $URLS; do
             ok=0
