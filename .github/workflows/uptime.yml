@@ -21,20 +21,16 @@ jobs:
           URLS="https://northjstech.com/ \
                 https://upsell.northjstech.com/healthz https://productoptions.northjstech.com/healthz \
                 https://cartdrawer.northjstech.com/healthz https://quantitybreaks.northjstech.com/healthz \
-                https://support.northjstech.com/healthz https://richlandingbundle.northjstech.com/healthz \
+                https://richlandingbundle.northjstech.com/healthz \
                 https://formbuilder.northjstech.com/healthz https://quiz.northjstech.com/healthz \
                 https://deliveryapp.northjstech.com/healthz https://wishlist.northjstech.com/healthz \
-                https://njsemailsystem.northjstech.com/healthz \
                 https://sizechart.northjstech.com/healthz \
                 https://backinstock.northjstech.com/healthz \
                 https://sectionbuilder.northjstech.com/healthz \
                 https://fraudfilter.northjstech.com/healthz \
                 https://instagramfeed.northjstech.com/healthz \
                 https://loyaltyandrewards.northjstech.com/healthz \
-                https://emailpopup.northjstech.com/healthz \
-                https://ndc.northjstech.com/healthz \
-                https://abtest.northjstech.com/healthz \
-                https://taskmanagement.northjstech.com/healthz"
+                https://emailpopup.northjstech.com/healthz"
           FAILED=""
           for u in $URLS; do
             ok=0
