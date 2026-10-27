@@ -38,7 +38,8 @@ jobs:
                 https://email.northjstech.net/healthz \
                 https://ndc.northjstech.net/healthz \
                 https://abtest.northjstech.net/healthz \
-                https://support.northjstech.net/healthz"
+                https://support.northjstech.net/healthz \
+                https://taskmanagement.northjstech.net/healthz"
           FAILED=""
           for u in $URLS; do
             ok=0
