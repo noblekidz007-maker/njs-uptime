@@ -34,7 +34,11 @@ jobs:
                 https://currencyconverter.northjstech.com/healthz \
                 https://breadcrumbs.northjstech.com/healthz \
                 https://combinedlistings.northjstech.com/healthz \
-                https://variantimages.northjstech.com/healthz"
+                https://variantimages.northjstech.com/healthz \
+                https://email.northjstech.net/healthz \
+                https://ndc.northjstech.net/healthz \
+                https://abtest.northjstech.net/healthz \
+                https://support.northjstech.net/healthz"
           FAILED=""
           for u in $URLS; do
             ok=0
