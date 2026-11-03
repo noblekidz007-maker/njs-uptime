@@ -32,6 +32,15 @@ jobs:
                 https://loyaltyandrewards.northjstech.com/healthz \
                 https://emailpopup.northjstech.com/healthz \
                 https://currencyconverter.northjstech.com/healthz \
+                https://shippingrates.northjstech.com/healthz \
+                https://subscription.northjstech.com/healthz \
+                https://storelocator.northjstech.com/healthz \
+                https://appointmentbooking.northjstech.com/healthz \
+                https://checkoutcustomization.northjstech.com/healthz \
+                https://euwithdrawal.northjstech.com/healthz \
+                https://hideprice.northjstech.com/healthz \
+                https://requestquote.northjstech.com/healthz \
+                https://gdprcompliance.northjstech.com/healthz \
                 https://breadcrumbs.northjstech.com/healthz \
                 https://combinedlistings.northjstech.com/healthz \
                 https://variantimages.northjstech.com/healthz \
