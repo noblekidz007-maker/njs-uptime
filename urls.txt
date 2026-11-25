@@ -1,0 +1,45 @@
+# njs-prod-1 (176.9.222.53): website root + every app /healthz, from /opt/infra/apps.yaml
+https://upsell.northjstech.com/healthz
+https://productoptions.northjstech.com/healthz
+https://cartdrawer.northjstech.com/healthz
+https://quantitybreaks.northjstech.com/healthz
+https://richlandingbundle.northjstech.com/healthz
+https://formbuilder.northjstech.com/healthz
+https://quiz.northjstech.com/healthz
+https://northjstech.com/
+https://deliveryapp.northjstech.com/healthz
+https://wishlist.northjstech.com/healthz
+https://sizechart.northjstech.com/healthz
+https://backinstock.northjstech.com/healthz
+https://sectionbuilder.northjstech.com/healthz
+https://fraudfilter.northjstech.com/healthz
+https://instagramfeed.northjstech.com/healthz
+https://loyaltyandrewards.northjstech.com/healthz
+https://emailpopup.northjstech.com/healthz
+https://currencyconverter.northjstech.com/healthz
+https://breadcrumbs.northjstech.com/healthz
+https://combinedlistings.northjstech.com/healthz
+https://variantimages.northjstech.com/healthz
+https://croabtesting.northjstech.com/healthz
+https://shippingrates.northjstech.com/healthz
+https://subscription.northjstech.com/healthz
+https://storelocator.northjstech.com/healthz
+https://appointmentbooking.northjstech.com/healthz
+https://checkoutcustomization.northjstech.com/healthz
+https://euwithdrawal.northjstech.com/healthz
+https://hideprice.northjstech.com/healthz
+https://requestquote.northjstech.com/healthz
+https://gdprcompliance.northjstech.com/healthz
+
+# njt-prod-01 (162.55.238.178)
+https://email.northjstech.net/healthz
+https://ndc.northjstech.net/healthz
+https://abtest.northjstech.net/healthz
+https://support.northjstech.net/healthz
+https://taskmanagement.northjstech.net/healthz
+# health paths of these are internal-only in Caddy, so probe the root
+https://hotelsystem.northjstech.net/
+https://pos.hotelsystem.northjstech.net/
+https://schoolmanagementsystem.northjstech.net/
+https://tourism.northjstech.net/
+https://admin.banksystem.northjstech.net/

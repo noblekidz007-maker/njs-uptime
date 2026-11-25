@@ -1,76 +1,41 @@
 name: uptime
-# external uptime checks, every hour
+# external uptime checks every 10 minutes; URLs live in urls.txt
 on:
   schedule:
-    - cron: '0 * * * *'   # hourly uptime check
-    - cron: '30 0 1 * *'  # monthly keepalive (offset :30 so it never coincides with a check run)
+    - cron: '3-59/10 * * * *'  # every 10 min, offset from :00 (GitHub drops more runs at :00)
+    - cron: '30 0 1 * *'       # monthly keepalive
   workflow_dispatch:
 permissions:
   contents: write
+concurrency:
+  group: uptime-${{ github.event.schedule == '30 0 1 * *' && 'keepalive' || 'check' }}
+  cancel-in-progress: false
 jobs:
   check:
     runs-on: ubuntu-latest
-    if: github.event_name == 'workflow_dispatch' || github.event.schedule == '0 * * * *'
+    timeout-minutes: 4
+    if: github.event_name == 'workflow_dispatch' || github.event.schedule == '3-59/10 * * * *'
     steps:
+      - uses: actions/checkout@v4
+      - name: Restore alert state
+        uses: actions/cache/restore@v4
+        with:
+          path: state
+          key: uptime-state-${{ github.run_id }}
+          restore-keys: uptime-state-
       - name: Check all sites
         env:
           NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
-        run: |
-          # site root for the marketing site; /healthz for the apps (their roots
-          # redirect into Shopify OAuth, which returns 410 to plain probes)
-          URLS="https://northjstech.com/ \
-                https://upsell.northjstech.com/healthz https://productoptions.northjstech.com/healthz \
-                https://cartdrawer.northjstech.com/healthz https://quantitybreaks.northjstech.com/healthz \
-                https://richlandingbundle.northjstech.com/healthz \
-                https://formbuilder.northjstech.com/healthz https://quiz.northjstech.com/healthz \
-                https://deliveryapp.northjstech.com/healthz https://wishlist.northjstech.com/healthz \
-                https://sizechart.northjstech.com/healthz \
-                https://backinstock.northjstech.com/healthz \
-                https://sectionbuilder.northjstech.com/healthz \
-                https://fraudfilter.northjstech.com/healthz \
-                https://instagramfeed.northjstech.com/healthz \
-                https://loyaltyandrewards.northjstech.com/healthz \
-                https://emailpopup.northjstech.com/healthz \
-                https://currencyconverter.northjstech.com/healthz \
-                https://shippingrates.northjstech.com/healthz \
-                https://subscription.northjstech.com/healthz \
-                https://storelocator.northjstech.com/healthz \
-                https://appointmentbooking.northjstech.com/healthz \
-                https://checkoutcustomization.northjstech.com/healthz \
-                https://euwithdrawal.northjstech.com/healthz \
-                https://hideprice.northjstech.com/healthz \
-                https://requestquote.northjstech.com/healthz \
-                https://gdprcompliance.northjstech.com/healthz \
-                https://breadcrumbs.northjstech.com/healthz \
-                https://combinedlistings.northjstech.com/healthz \
-                https://variantimages.northjstech.com/healthz \
-                https://email.northjstech.net/healthz \
-                https://ndc.northjstech.net/healthz \
-                https://abtest.northjstech.net/healthz \
-                https://support.northjstech.net/healthz \
-                https://taskmanagement.northjstech.net/healthz"
-          FAILED=""
-          for u in $URLS; do
-            ok=0
-            for attempt in 1 2; do
-              code=$(curl -s -o /dev/null -w '%{http_code}' -m 20 "$u" || echo 000)
-              case "$code" in 2*|3*) ok=1; break;; esac
-              sleep 10
-            done
-            [ "$ok" = 1 ] || FAILED="$FAILED ${u#https://}($code)"
-          done
-          if [ -n "$FAILED" ]; then
-            curl -fsS -m 10 \
-              -H "Title: SITE DOWN (external check)" \
-              -H "Priority: max" \
-              -H "Tags: rotating_light" \
-              -d "Unreachable from GitHub:$FAILED" \
-              "https://ntfy.sh/$NTFY_TOPIC"
-            echo "FAILED:$FAILED"; exit 1
-          fi
-          echo "all sites OK"
+        run: bash check.sh
+      - name: Save alert state
+        if: always()
+        uses: actions/cache/save@v4
+        with:
+          path: state
+          key: uptime-state-${{ github.run_id }}-${{ github.run_attempt }}
   keepalive:
     runs-on: ubuntu-latest
+    timeout-minutes: 3
     if: github.event.schedule == '30 0 1 * *'
     steps:
       - uses: actions/checkout@v4
